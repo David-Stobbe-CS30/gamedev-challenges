@@ -10,17 +10,22 @@ class wall:
     def __init__(self):
         self.x = random.randint(0, screenSize[0])
         self.y = random.randint(0, screenSize[1])
-        self.w = random.randint(10, 50)
-        self.h = random.randint(10, 50)
+        self.w = random.randint(50, 100)
+        self.h = random.randint(50, 100)
     def draw(self):
         pygame.draw.rect(screen, "grey", (self.x, self.y, self.w, self.h))
     def collision(self):
         #Collision logic
-        if((player.x + player.w > self.x or player.x < self.x + self.w) and (player.y + player.h > self.y or player.y < self.y + self.h)):
-            print("x collision")
-            # if(player.y + player.h > self.y or player.y < self.y + self.h):
-                # player.x = startingPos[0]
-                # player.y = startingPos[1]
+        if(player.x + player.w > self.x and player.x + player.w < self.x + self.w) or (player.x < self.x + self.w and player.x > self.x): 
+            if((player.y + player.h > self.y and player.y + player.h < self.y + self.h) or (player.y < self.y + self.h and player.y > self.y)):
+                if(player.v[0] == -1):
+                    player.x = self.x + self.w
+                elif(player.v[0] == 1):
+                    player.x = self.x - player.w
+                elif(player.v[1] == -1):
+                    player.y = self.y + self.h
+                elif(player.v[1] == 1):
+                    player.y = self.y - player.h
 
 class playerClass:
     def __init__(self):
@@ -28,18 +33,26 @@ class playerClass:
         self.y = startingPos[1]
         self.w = 20
         self.h = 20
+        self.v = [0, 0]
     def draw(self):
         pygame.draw.rect(screen, "blue", (self.x, self.y, self.w, self.h))
     def move(self):
+        self.v = [0, 0]
         keys = pygame.key.get_pressed()
         if(keys[pygame.K_w]):
-            self.y -= 1
+            self.v[1] = -1
         elif(keys[pygame.K_s]):
-            self.y += 1
+            self.v[1] = 1
         elif(keys[pygame.K_a]):
-            self.x -= 1
+            self.v[0] = -1
         elif(keys[pygame.K_d]):
-            self.x += 1
+            self.v[0] = 1
+        self.y += self.v[1]
+        self.x += self.v[0]
+
+def generateWalls():
+    for n in range(5):
+        walls.append(wall())
 
 
 def draw():
@@ -61,7 +74,7 @@ def loop():
         player.move()
 
 walls = []
-for n in range(5):
-    walls.append(wall())
+generateWalls()
 player = playerClass()
 loop()
+
