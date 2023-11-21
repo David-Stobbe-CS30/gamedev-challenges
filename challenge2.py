@@ -41,11 +41,11 @@ class playerClass:
         keys = pygame.key.get_pressed()
         if(keys[pygame.K_w]):
             self.v[1] = -1
-        elif(keys[pygame.K_s]):
+        if(keys[pygame.K_s]):
             self.v[1] = 1
-        elif(keys[pygame.K_a]):
+        if(keys[pygame.K_a]):
             self.v[0] = -1
-        elif(keys[pygame.K_d]):
+        if(keys[pygame.K_d]):
             self.v[0] = 1
         self.y += self.v[1]
         self.x += self.v[0]
