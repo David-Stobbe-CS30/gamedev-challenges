@@ -7,8 +7,8 @@ screen = pygame.display.set_mode((screenSize[0], screenSize[1]))
 
 circles = []
 rectangles = []
-amount = 1
-running = True
+amount = 5
+mouse = False
 
 def generate():
     for n in range(amount):
@@ -19,8 +19,8 @@ class Rectangle:
     def __init__(self):
         self.x = random.randint(0, screenSize[0])
         self.y = random.randint(0, screenSize[1])
-        self.w = random.randint(5, 25)
-        self.h = random.randint(5, 25)
+        self.w = random.randint(50, 100)
+        self.h = random.randint(50, 100)
         self.xv = random.uniform(0.1, 0.5) * (random.randint(0, 1)*2 -1)
         self.yv = random.uniform(0.1, 0.5) * (random.randint(0, 1)*2 -1)
     def draw(self):
@@ -69,11 +69,21 @@ def click(pos):
     for circle in circles:
         if(((circle.x) - pos[0])**2 + ((circle.y) - pos[1])**2 <= circle.r ** 2):
             circles.remove(circle)
+            return
+    
+    for rectangle in rectangles:
+        if(pos[0] >= rectangle.x and pos[0] <= rectangle.x + rectangle.w): 
+            if(pos[1] >= rectangle.y and pos[1] <= rectangle.y + rectangle.h):
+                pygame.quit()
+               
+        
+
 
 
 
     
 def loop():
+    running = True
     while running:
         screen.fill("white")
         for rectangle in rectangles:
