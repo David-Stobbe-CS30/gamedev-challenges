@@ -12,17 +12,40 @@ class Player:
         self.y = screenSize[1] - 100
         self.w = 20
         self.h = 20
+        self.yv = 0
+        self.startY = 0
+        self.g = 0.005
+        self.jumping = False
+        self.onPlatform = False
     def draw(self):
         pygame.draw.rect(screen, "blue", (self.x, self.y, self.w, self.h))
+        pygame.draw.line(screen, "red", (0, screenSize[1] - 100 + self.h), (screenSize[0], screenSize[1] - 100 + self.h))
+        pygame.draw.line(screen, "red", (self.x + self.w, 0), (self.x + self.w, screenSize[1]))
     def move(self):
         keys = pygame.key.get_pressed()
         if(keys[pygame.K_a]):
             background.x += 1
         elif(keys[pygame.K_d]):
             background.x -= 1
-        elif(keys[pygame.K_w]):
-            ##JUMP
-            self.y -= 0.5
+        if(keys[pygame.K_w]):
+            if(not self.jumping):
+                self.startY = self.y
+                self.yv = -1
+                self.jumping = True
+        if(self.jumping):
+            self.jump()
+    def jump(self):
+        self.yv += self.g
+        self.y += self.yv
+        if(self.y >= screenSize[1]- 100 or player.onPlatform):
+            self.y = self.startY
+            self.jumping = False
+            return
+        
+
+
+        
+        
 
 
 class Background:
@@ -37,9 +60,9 @@ class Background:
         for n in range(15):
             platX += 200
             if n % 2 == 0:
-                platY = screenSize[1] - 300
-            else:
                 platY = screenSize[1] - 200
+            else:
+                platY = screenSize[1] - 150
             self.platforms.append(Platform(platX, platY, 100, 10))
     def draw(self):
         for platform in self.platforms:
@@ -55,14 +78,20 @@ class Platform:
         self.y = y
         self.w = w
         self.h = h
+        self.color = "grey"
     def draw(self):
-        pygame.draw.rect(screen, "grey", (self.x + background.x, self.y, self.w, self.h))
+        pygame.draw.rect(screen, self.color, (self.x + background.x, self.y, self.w, self.h))
     def collisionCheck(self):
-        if(player.x >= self.x and player.x <= self.x + self.w):
-            print("Test")
-            if(player.y <= self.y and player.y >= self.y + self.h):
-                player.y = self.y + player.h
-                print("test")
+        if(player.x + player.w - background.x >= self.x and player.x - background.x <= self.x + self.w):
+            if(player.y + player.h >= self.y and player.y <= self.y + self.h):
+                player.y = self.y - player.h
+                player.jumping = False
+                player.onPlatform = True
+                return
+        #     if(pl)
+        # player.onPlatform = False
+        # player.jumping = True
+        # player.yv = 0
 
     
 
