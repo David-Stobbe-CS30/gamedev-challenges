@@ -5,12 +5,12 @@ import pygame
 screenSize = [1500, 1000]
 pygame.init()
 screen = pygame.display.set_mode((screenSize[0] - 500, screenSize[1]))
-
+ground = screenSize[1] - 100
 
 class Player:
     def __init__(self):
         self.x = (screenSize[0] - 500) / 2
-        self.y = screenSize[1] - 100
+        self.y = ground
         self.w = 20
         self.h = 20
         self.yv = 0
@@ -22,29 +22,30 @@ class Player:
     def draw(self):
         pygame.draw.rect(screen, "blue", (self.x, self.y, self.w, self.h))
         pygame.draw.line(
-            screen, "red", (0, screenSize[1] - 100 + self.h), (screenSize[0], screenSize[1] - 100 + self.h))
-        pygame.draw.line(screen, "red", (self.x + self.w, 0),
-                         (self.x + self.w, screenSize[1]))
-
+            screen, "red", (0, ground + self.h), (screenSize[0], ground + self.h))
+        pygame.draw.line(
+            screen, "red", (screenSize[0]-500/2, 0), (screenSize[0]-500/2, screenSize[1]))
     def move(self):
         keys = pygame.key.get_pressed()
+        ##TODO: CHANGE BOUNDARIES AND MAKE THIS CLEANER
         if (keys[pygame.K_a]):
-            if (background.x >= screenSize[1] or background.x <= -screenSize[1]):
+            if (((background.x >= screenSize[0]) and (self.x <= 500)) or ((background.x <= -screenSize[0]) and (self.x >= 500))):
                 self.x -= 1
             else:
                 background.x += 1
+                self.x = 500
         elif (keys[pygame.K_d]):
-            if (background.x >= screenSize[1] or background.x <= -screenSize[1]):
+            if ((background.x >= screenSize[0]) and (self.x <= 500)) or ((background.x <= -screenSize[0]) and (self.x >= 500)):
                 self.x += 1
             else:
                 background.x -= 1
-            # background.x -= 1
+                self.x = 500
         if (keys[pygame.K_w]):
             if (not self.jumping):
                 self.startY = self.y
                 self.yv = -1
                 self.jumping = True
-        if (not self.onPlatform and self.y < screenSize[1] - 100):
+        if (not self.onPlatform and self.y < ground):
             self.jumping = True
 
         if (self.jumping):
@@ -53,8 +54,8 @@ class Player:
     def jump(self):
         self.yv += self.g
         self.y += self.yv
-        if (self.y >= screenSize[1] - 100):
-            self.y = screenSize[1] - 100
+        if (self.y >= ground):
+            self.y = ground
             self.jumping = False
             self.yv = 0
         elif (self.onPlatform):
@@ -75,9 +76,9 @@ class Background:
         for n in range(15):
             platX += 200
             if n % 2 == 0:
-                platY = screenSize[1] - 200
+                platY = screenSize[1] - 300
             else:
-                platY = screenSize[1] - 150
+                platY = screenSize[1] - 200
             self.platforms.append(Platform(platX, platY, 100, 10))
 
     def draw(self):
