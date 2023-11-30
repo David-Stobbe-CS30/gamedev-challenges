@@ -27,15 +27,14 @@ class Player:
             screen, "red", (screenSize[0]-500/2, 0), (screenSize[0]-500/2, screenSize[1]))
     def move(self):
         keys = pygame.key.get_pressed()
-        ##TODO: CHANGE BOUNDARIES AND MAKE THIS CLEANER
         if (keys[pygame.K_a]):
-            if (((background.x >= screenSize[0]) and (self.x <= 500)) or ((background.x <= -screenSize[0]) and (self.x >= 500))):
+            if (((background.x >= 400) and (self.x <= 500)) or ((background.x <= -2600) and (self.x >= 500))):
                 self.x -= 1
             else:
                 background.x += 1
                 self.x = 500
         elif (keys[pygame.K_d]):
-            if ((background.x >= screenSize[0]) and (self.x <= 500)) or ((background.x <= -screenSize[0]) and (self.x >= 500)):
+            if ((background.x >= 400) and (self.x <= 500)) or ((background.x <= -2600) and (self.x >= 500)):
                 self.x += 1
             else:
                 background.x -= 1
@@ -67,8 +66,8 @@ class Background:
     def __init__(self):
         self.x = 0
         self.y = 0
-        self.w = screenSize[0]
-        self.h = screenSize[1]
+        # self.w = screenSize[0]
+        # self.h = screenSize[1]
         self.platforms = []
 
     def createPlatforms(self):
