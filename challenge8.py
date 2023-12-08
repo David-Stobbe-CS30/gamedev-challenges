@@ -4,6 +4,7 @@ screenSize = [1000, 1000]
 
 pygame.init()
 screen = pygame.display.set_mode((screenSize[0], screenSize[1]))
+ground = screenSize[1] - 100
 
 
 class Player:
@@ -47,7 +48,7 @@ class Player:
                 self.startY = self.y
                 self.yv = -1
                 self.jumping = True
-        if (not self.onPlatform and self.y < screenSize[1] - 100):
+        if (not self.onPlatform and self.y < ground):
             self.jumping = True
 
         if (self.jumping):
@@ -56,8 +57,8 @@ class Player:
     def jump(self):
         self.yv += self.g
         self.y += self.yv
-        if (self.y >= screenSize[1] - 100):
-            self.y = screenSize[1] - 100
+        if (self.y >= ground):
+            self.y = ground
             self.jumping = False
             self.yv = 0
         elif (self.onPlatform):
@@ -78,9 +79,9 @@ class Background:
         n = 0
         while platX < self.w:
             if n % 2 == 0:
-                platY = screenSize[1] - 200
+                platY = screenSize[1] - 300
             else:
-                platY = screenSize[1] - 150
+                platY = screenSize[1] - 200
             self.platforms.append(Platform(platX, platY, 100, 10))
             platX += 100
             n += 1
