@@ -7,8 +7,6 @@ pygame.init()
 screen = pygame.display.set_mode((screenSize[0], screenSize[1]))
 
 
-
-
 class Circle:
     def __init__(self):
         self.x = random.randint(0, screenSize[0])
@@ -30,42 +28,48 @@ class Circle:
         self.x += self.xv
         self.y += self.yv
 
+
 class Player:
     def __init__(self):
         self.x = screenSize[0] / 2
         self.y = screenSize[1] + 50
         self.r = 20
         self.mouseAngle = 0
+
     def draw(self):
         mousePos = pygame.mouse.get_pos()
         self.mouseAngle = math.atan2(
             mousePos[1] - self.y, mousePos[0] - self.x)
         pygame.draw.circle(screen, "green", (self.x, self.y), self.r)
-        pygame.draw.line(screen, "black", (self.x, self.y), (self.x + (math.cos(self.mouseAngle) * self.r), self.y + (math.sin(self.mouseAngle) * self.r)))
+        pygame.draw.line(screen, "black", (self.x, self.y), (self.x + (math.cos(
+            self.mouseAngle) * self.r), self.y + (math.sin(self.mouseAngle) * self.r)))
+
     def shoot(self):
         newBullet = Bullet(self.mouseAngle)
         bullets.append(newBullet)
+
     def move(self):
-            keys = pygame.key.get_pressed()
-            self.orientation = [0, 0]
-            if (keys[pygame.K_a]):
-                self.x -= 1
-            if (keys[pygame.K_d]):
-                self.x += 1
-            if (keys[pygame.K_w]):
-                self.y -= 1
-            if (keys[pygame.K_s]):
-                self.y += 1
+        keys = pygame.key.get_pressed()
+        self.orientation = [0, 0]
+        if (keys[pygame.K_a]):
+            self.x -= 1
+        if (keys[pygame.K_d]):
+            self.x += 1
+        if (keys[pygame.K_w]):
+            self.y -= 1
+        if (keys[pygame.K_s]):
+            self.y += 1
 
-            if(self.x - self.r < 0):
-                self.x = self.r
-            elif(self.x + self.r > screenSize[0]):
-                self.x = screenSize[0] - self.r
+        if (self.x - self.r < 0):
+            self.x = self.r
+        elif (self.x + self.r > screenSize[0]):
+            self.x = screenSize[0] - self.r
 
-            if(self.y - self.r < 0):
-                self.y = self.r
-            elif(self.y + self.r > screenSize[1]):
-                self.y = screenSize[1] - self.r
+        if (self.y - self.r < 0):
+            self.y = self.r
+        elif (self.y + self.r > screenSize[1]):
+            self.y = screenSize[1] - self.r
+
 
 class Bullet:
     def __init__(self, angle):
@@ -74,17 +78,19 @@ class Bullet:
         self.r = 5
         self.hit = False
         self.angle = angle
+
     def draw(self):
         pygame.draw.circle(screen, "black", (self.x, self.y), self.r)
+
     def collide(self):
         for circle in circles:
             if (circle.x - self.x)**2 + (circle.y - self.y)**2 <= (circle.r + self.r)**2:
                 circles.remove(circle)
                 self.hit = True
+
     def move(self):
-        self.y += math.sin(self.angle)
-        self.x += math.cos(self.angle)
-        
+        self.y += math.sin(self.angle) * 2
+        self.x += math.cos(self.angle) * 2
 
 
 circles = []
@@ -99,7 +105,7 @@ def draw():
         circle.draw()
         circle.move()
     for bullet in bullets:
-        if(bullet.y < 0):
+        if (bullet.y < 0):
             bullets.remove(bullet)
             continue
         bullet.draw()
@@ -107,11 +113,13 @@ def draw():
     player.move()
     player.draw()
 
+
 def checkCollision():
     for bullet in bullets:
         bullet.collide()
-        if(bullet.hit):
+        if (bullet.hit):
             bullets.remove(bullet)
+
 
 def loop():
     running = True
@@ -124,6 +132,7 @@ def loop():
             if event.type == pygame.QUIT:
                 pygame.quit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                player.shoot() 
+                player.shoot()
+
 
 loop()
