@@ -79,9 +79,9 @@ class Background:
         n = 0
         while platX < self.w:
             if n % 2 == 0:
-                platY = screenSize[1] - 300
-            else:
                 platY = screenSize[1] - 200
+            else:
+                platY = screenSize[1] - 150
             self.platforms.append(Platform(platX, platY, 100, 10))
             platX += 100
             n += 1

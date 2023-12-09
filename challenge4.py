@@ -29,7 +29,7 @@ class Player:
             self.y = self.mousePos[1]
 
     def draw(self):
-        pygame.draw.circle(screen, "green", (self.x, self.y), self.r)
+        pygame.draw.circle(screen, "black", (self.x, self.y), self.r)
 
     def eat(self, foodSize):
         self.r += (foodSize / 8)
@@ -41,9 +41,11 @@ class Food:
         self.y = random.randint(0, screenSize[1])
         self.r = random.randint(5, 25)
         self.eaten = False
+        self.rgb = (random.randint(0, 255), random.randint(
+            0, 255), random.randint(0, 255))
 
     def draw(self):
-        pygame.draw.circle(screen, "red", (self.x, self.y), self.r)
+        pygame.draw.circle(screen, self.rgb, (self.x, self.y), self.r)
 
     def collide(self):
         if (player.x - self.x)**2 + (player.y - self.y)**2 <= (player.r + self.r)**2:

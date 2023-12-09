@@ -37,8 +37,8 @@ class Player:
         self.orientation = [0, -1]
 
     def draw(self):
-        pygame.draw.circle(screen, "green", (self.x, self.y), self.r)
-        pygame.draw.line(screen, "black", (self.x, self.y), (self.x +
+        pygame.draw.circle(screen, "black", (self.x, self.y), self.r)
+        pygame.draw.line(screen, "white", (self.x, self.y), (self.x +
                          (self.orientation[0] * self.r), self.y + (self.orientation[1] * self.r)))
 
     def shoot(self):

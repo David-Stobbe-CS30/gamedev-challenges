@@ -40,8 +40,8 @@ class Player:
         mousePos = pygame.mouse.get_pos()
         self.mouseAngle = math.atan2(
             mousePos[1] - self.y, mousePos[0] - self.x)
-        pygame.draw.circle(screen, "green", (self.x, self.y), self.r)
-        pygame.draw.line(screen, "black", (self.x, self.y), (self.x + (math.cos(
+        pygame.draw.circle(screen, "black", (self.x, self.y), self.r)
+        pygame.draw.line(screen, "white", (self.x, self.y), (self.x + (math.cos(
             self.mouseAngle) * self.r), self.y + (math.sin(self.mouseAngle) * self.r)))
 
     def shoot(self):

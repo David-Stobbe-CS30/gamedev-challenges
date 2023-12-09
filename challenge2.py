@@ -25,8 +25,9 @@ class wall:
         pygame.draw.rect(screen, "grey", (self.x, self.y, self.w, self.h))
 
     def collision(self):
-        if (player.x + player.w > self.x and player.x + player.w < self.x + self.w) or (player.x < self.x + self.w and player.x > self.x):
-            if ((player.y + player.h > self.y and player.y + player.h < self.y + self.h) or (player.y < self.y + self.h and player.y > self.y)):
+        if (player.x + player.w > self.x and player.x < self.x + self.w):
+            if (player.y + player.h > self.y and player.y < self.y + self.h):
+
                 newCoords = [player.x - player.v[0], player.y - player.v[1]]
 
                 shortestTime = float("inf")

@@ -17,12 +17,18 @@ def generate():
         rectangles.append(Rectangle())
 
 
+def newgame():
+    circles.clear()
+    rectangles.clear()
+    generate()
+
+
 class Rectangle:
     def __init__(self):
         self.x = random.randint(0, screenSize[0])
         self.y = random.randint(0, screenSize[1])
-        self.w = random.randint(50, 100)
-        self.h = random.randint(50, 100)
+        self.w = random.randint(30, 70)
+        self.h = random.randint(30, 70)
         self.xv = random.uniform(0.1, 0.5) * (random.randint(0, 1)*2 - 1)
         self.yv = random.uniform(0.1, 0.5) * (random.randint(0, 1)*2 - 1)
 
@@ -32,12 +38,12 @@ class Rectangle:
     def move(self):
         if (self.x >= screenSize[0]):
             self.x = 0
-        elif (self.x <= 0):
+        elif (self.x + self.w <= 0):
             self.x = screenSize[0]
 
         if (self.y >= screenSize[1]):
             self.y = 0
-        elif (self.y <= 0):
+        elif (self.y + self.h <= 0):
             self.y = screenSize[1]
 
         self.x += self.xv
@@ -48,9 +54,9 @@ class Circle:
     def __init__(self):
         self.x = random.randint(0, screenSize[0])
         self.y = random.randint(0, screenSize[1])
-        self.r = random.randint(50, 100)
-        self.xv = random.uniform(0.01, 0.1) * (random.randint(0, 1)*2 - 1)
-        self.yv = random.uniform(0.01, 0.1) * (random.randint(0, 1)*2 - 1)
+        self.r = random.randint(50, 70)
+        self.xv = random.uniform(0.1, 0.5) * (random.randint(0, 1)*2 - 1)
+        self.yv = random.uniform(0.1, 0.5) * (random.randint(0, 1)*2 - 1)
 
     def draw(self):
         pygame.draw.circle(screen, "green", (self.x, self.y), self.r)
@@ -71,14 +77,15 @@ def click(pos):
         if (((circle.x) - pos[0])**2 + ((circle.y) - pos[1])**2 <= circle.r ** 2):
             circles.remove(circle)
             if (len(circles) == 0):
-                print("YOU WIN!")
+                print("YOU WIN")
+                newgame()
             return
 
     for rectangle in rectangles:
         if (pos[0] >= rectangle.x and pos[0] <= rectangle.x + rectangle.w):
             if (pos[1] >= rectangle.y and pos[1] <= rectangle.y + rectangle.h):
-                pygame.quit()
                 print("YOU LOSE!")
+                newgame()
 
 
 def loop():
@@ -98,7 +105,6 @@ def loop():
             if event.type == pygame.QUIT:
                 pygame.quit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                print("click")
                 click(pygame.mouse.get_pos())
 
 
